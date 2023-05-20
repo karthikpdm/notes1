@@ -1,0 +1,67 @@
+memory script
+
+#! bin/bash
+diskspace=`df -h .|tail -1|awk -F " " '{PRINT $(NF-1)}'| sed s/%//gi`
+echo "consumed memory is $diskspace
+if [$diskspace -ge 80]
+then
+echo "disk space is more then 80 take appriporate action" | mail -s "disk space is full" -c "abc@gmail.com
+fi
+
+==================================================================================================================================
+clean up script
+
+#! bin/bash
+folder_path=/usr/home/ubuntu
+cd $folder_path
+total_files='ls | wc -l'
+extra_files=`expr$total_files - 20`
+if [$extra_files -ge 20]
+then
+echo "folder as more then 20 files"
+ls -lrt|head -$extra_files | xargs rm -rf
+fi
+==================================================================================================================================
+
+if the service is stopped then send email to me
+
+#! bin/bash
+service=tomact
+for i in $service
+do
+ps -ef | gerp -i $i
+if [$? -ne 0]
+then
+echo "service is stopped" | mail -s "service stopped estsrt the service" -c "abc@gmail.com"
+sudo service "$i" restart
+fi
+done
+
+==================================================================================================================================
+
+to check the given string is a palandrome or not
+
+#! bin/bash
+
+read palndrome
+reverse=$(echo "palandrome" | reve
+if [$palndrome -eq $reverse]
+then
+echo "the given string is a palandrome"
+else
+echo "the given string is not a plandrome"
+fi
+==================================================================================================================================
+to check weather it the given is file or directory and link
+
+#! /bin/bash
+read file
+if [-f $file]
+then
+echo "it is file"
+elsif [-d $file]
+then
+echo "the given $file is a directory"
+else
+echo "is not the file or directory"
+fi
