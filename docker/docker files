@@ -1,1 +1,13 @@
+A) Docker file for installing the ingnx
+
+FROM ubuntu
+MAINTAINER devops
+RUN sudo apt-get update 
+RUN sudo apt-get install -y ingnx
+COPY nginx.conf /etc/nginx/nginx.conf
+ENTRYPOINT [“/usr/sbin/ingnx”, “-g”, “-daemon -off”]
+#where in order to start the docker service it will got to the /usr/sbin/ingnx/ path and it will start the 
+ingnx service 
+Where as daemon will bring the application to the foreground
+EXPOSE 80
 
