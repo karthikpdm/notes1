@@ -1,0 +1,18 @@
+Run command options
+1) Docker login – to login to the hub.docker.com from u r docker or so incase of private repository 
+like azure,aws and gcp. 
+2) -it - Used for opening an interactive terminal in the container where we can fire linux commands
+3) -d - Runs the container as a deamon ie it runs the container in the background
+4) --name - Used for assigning a name to a container
+5) -p - Used for port mapping.It will link the container port with the docker host port.Container 
+port is called internal port and docker host port is called external port Eg: -p 8080:80 Here 
+8080 will be docker host port and 80 will be container port
+6) -P - Used for automatic port mapping ie the internal port of container will be mapped with a 
+port on docker host and this external port will be greater than 30000
+7) -v - Used for mounting volumes on a container
+8) –volumes - from Used for creating reusable volumes that can be shared between containers
+9) –network - Used for assigning a network to a container
+10) -e - Used for assigning environment variables
+11) -rm - Used for removing the container on exit
+12) –mem - Used for allocating memory to containers
+13) --cpu - Used for allocating fixed amount of cpu to containers
