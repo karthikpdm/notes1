@@ -11,3 +11,12 @@ ingnx service
 Where as daemon will bring the application to the foreground
 EXPOSE 80
 
+b) installing the apache2
+
+FROM ubuntu 
+RUN apt update 
+RUN apt install –y apache2 
+EXPOSE 80
+CMD [“apache2ctl”, “-D”, “FOREGROUND”]
+
+
