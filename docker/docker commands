@@ -110,3 +110,57 @@ the time of execution, usually used during the debug of the container.
 42) docker container update - Update configuration of one or more containers
 43) docker container wait - Block until one or more containers stop, then print their exit codes
 
+
+
+docker run -it <image_name> --> To create a Docker container
+docker run -it --name <container_name> <image_name> --> To give a name to the container
+docker run -it d <image_name> --> To start a container in background
+docker run -it-p 8080:8080 <image_name> --> To connect to a container on specific port
+docker run -it --detach-keys ctrl-s <image_name> --> To set an escape sequence for the container
+docker stop <container_name/container_ID> --> To stop a running container
+docker stop --time=20 <container_name/container_ID> --> To stop a running container after aparticular time period
+dockerstart <container_name/container_ID> --> To start a stopped container
+dockerstart -i <container_name/container_ID> --> To start a container and interact with it 
+docker attach <container_name/container_ID> --> To attach to a running container
+docker exec <container_name/container_ID> <command> --> To execute a command inside a running container
+docker exec -it <container_name/container_ID> /bin/sh --> T0 get into a container and interact with it
+
+Network commends:
+1) docker network ls - To see the list of docker networks
+2) docker network create <networkname> - used to create the custom bridge by default it will choose bridge 
+network but other than bridge we need to specify the name.
+3) docker network create --driver bridge <network_name> --> to create a docker network (we
+mustspecify the driver either bridge, host, null
+4) docker network inspect <network_name/network_id> - To find detailed info about a network to know 
+which type of the network did the container supports
+5) docker network rm network_name/network_id - To delete a network
+6) docker network connect <network_name> <conatiner_name/conatiner_id> --> To connect 
+container to a network
+7) docker network disconnect <network_name> <conatiner_name/conatiner_id> --> To 
+disconnect a network from a running container
+8) docker run -it--network=<network_name> <image_name> -> to create a container under a
+network
+9) docker exec -it container_name/container_id command_to_run - To run a particular command in a running 
+container
+10) docker exec -it container_name/container_id bash - To open bash terminal in an already running contianer
+11) ctrl+p,ctrl+q - To comeout of a container without exit.
+12) docker attach container_name/container_id - To go into a container which is already runing in background
+
+Volumes commands:
+1) docker volume create<name> - Create a volume
+2) docker volume inspect<name/id> - Display detailed information on one or more volumes
+3) docker volume ls - List volumes
+4) docker volume prune - Remove all unused local volumes
+5) docker volume rm <volume_nmae/id> - Remove one or more volumes
+6) docker volume update - Update a volume (cluster volumes only)
+mounting a volume to the container
+1) docker run -it –name=<container_name> -v <source_volume-name>:destination_path> <image_name>
+2) docker run -it –name=container1 -v volume1:/data/ image1 - create a container and to mount the volume 
+to the container.
+3) docker run -it –volmes-from <container_name> --name=<container_name> <image_name> /bin/bash
+4) docker run -it –volmes-from container1 --name=container2 image1 /bin/bash -to create the container and 
+share the same volume to the another container from the previously attached volume to the container
+or
+docker run -it –name=<container_name1> <container_name2> -v volume1:<destination> /bim/bash/ -
+hear sharing the container2 volume with the container1
+
