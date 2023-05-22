@@ -16,3 +16,97 @@ port on docker host and this external port will be greater than 30000
 11) -rm - Used for removing the container on exit
 12) –mem - Used for allocating memory to containers
 13) --cpu - Used for allocating fixed amount of cpu to containers
+============================================================================================================================
+docker image related commands
+
+Commands:
+1) Docker info - to check the docker information
+==>
+2) docker search <image_name> -- to search for a docker image in cmd line itsearch in
+dockerhub.com only
+3) docker pull <image_name> --> to download/pull the image from the docker hub to the 
+local
+4) docker image pull --all-tags ubuntu - docker pull pulls a single image from the registry. A 
+repository can contain multiple images. To pull all images from a repository, provide the -
+a (or --all-tags) option when using docker pull
+5) docker image ls or docker images - After the pull has completed use the docker image 
+ls command (or the docker images shorthand) to see the images that were pulled.
+6) Docker images -q – to list the images with the numeric id’s.
+7) Docker images -f “dangling= false” – to list all the images expect dangling images
+8) Docker images -f “dangling= true” – to list only the dangling images
+9) Docker image --filter=reference=’alpine’ – used to filter the name of the image which have 
+the alpine
+10) machine/systemdocker rmi <image_name/image_id> --> to remove a image from the 
+docker host
+11) docker run <image_name> - it will check in the local first then it will pull from the 
+registary.
+12) docker image build - Build an image from a Dockerfile
+13) docker image history <image_name> Show the history of an image
+14) docker image import - <image_name> <ubuntu.tar Import the contents from a tarball to 
+create a filesystem image
+15) docker image export <image_name/ids> > ubuntu.tar export a containers file system as a tar 
+archive
+16) docker image inspect <image_name> Display detailed information on one or more images
+17) docker image load <image_name> - Load an image from a tar archive or STDIN
+18) docker image prune <image_name> - Remove unused images
+19) docker image pull <image_name> - Download an image from a registry
+20) docker image push <image_name> - Upload an image to a registry
+21) docker image rm <image_name> - Remove one or more images
+22) docker image save <image_name>Save one or more images to a tar archive (streamed to 
+STDOUT by default)
+23) docker image tag <image_name> - Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
+24) docker pull ubuntu:<version_number> - to download a particular version image from the hub.
+25) Docker rmi <image_name/id> - to remove an image make sure before remove weather the 
+container is running with that image.
+26) Docker rmi -f <image_name/id> - to remove an image forcefully
+27) Docker images --no-trunc – used to list the sha id of the images
+
+
+docker
+
+1) docker ps --> To show all the running containers
+2) docker ps -a --> To shows all the containers(running and stopped)
+3) docker start <container_name> - to start container
+4) docker stop <container_name> - to stop
+5) docker attach <container_name> - to get in to container
+6) docker create <image_name> - to create an container from image
+7) docker create – name <custom_name> <image_name>- to create an container with the custom name
+8) docker rm <container_name/container_ID> --> To remove a container default time to stop the container is 10secs
+9) sudo rm -rf /var/lib/docker
+10) sudo rm -rf /var/lib/containerd - mages, containers, volumes, or custom configuration files on your host aren’t automatically 
+removed. To delete all images, containers, and volumes
+11) docker run -it <image_name> - to create a container from the image
+12) docker run -it - -name <name> <image_name> <bin/bash> - to download and run the image/create the container at a time
+13) cat /etc/os-release – to check weather the container is particular os
+14) docker commit - It can be useful to commit a container’s file changes or settings into a new image
+15) docker commit <container_name> <image_name> - to create a image from the container
+16) docker container commit - Create a new image from a container’s changes
+17) docker container cp - Copy files/folders between a container and the local filesystem
+18) docker container create <container_name> - Create a new container
+19) docker container diff <container_name> - Inspect changes to files or directories on a container’s filesystem
+20) docker container exec <container_name> - Execute a command in a running container
+21) docker container export --output=”mynew.tar” <container_name> - Export a container’s filesystem as a tar archive
+22) docker container inspect <container_name> - Display detailed information on one or more containers
+23) docker container kill <container_name> -Kill one or more running containers
+24) docker container logs <container_name> - Fetch the logs of a container, The docker logs command batch-retrieves logs present at
+the time of execution, usually used during the debug of the container.
+25) docker container ls List containers
+26) docker container pause Pause all processes within one or more containers
+27) docker container port List port mappings or a specific mapping for the container
+28) docker container prune Remove all stopped containers
+29) docker container rename Rename a container
+30) docker container restart - Restart one or more containers
+31) docker restart -t 10 container_name/container_id - to restart the container after 10 sec
+32) docker container rm Remove one or more containers which are stopped
+33) docker rm -f container_name/container_id - to remove a running container
+34) docker stop $(docker ps -aq) - To stop all running containers 
+35) docker rm $(docker ps -aq) - To remove all stopped containers where q will list the container ids in the output.
+36) docker container run Create and run a new container from an image
+37) docker container start Start one or more stopped containers
+38) docker container stats Display a live stream of container(s) resource usage statistics
+39) docker container stop Stop one or more running containers
+40) docker container top Display the running processes of a container
+41) docker container unpause - Unpause all processes within one or more containers
+42) docker container update - Update configuration of one or more containers
+43) docker container wait - Block until one or more containers stop, then print their exit codes
+
