@@ -1,0 +1,26 @@
+pods creation
+
+apiversion: v1
+kind: Pod
+meta:
+  name: podcreation
+  labels:
+    env: prod
+spec:
+  containers:
+  - name: cont1
+    image: ubuntu
+    port:
+    - containerport: 8080
+  nodeselector:
+    key: value
+
+
+  Commands :
+kubectl apply -f <.yaml> --> To create a K8s / how
+kuectl get pods --> To check all the pods running on the cluster
+kubectl delete pod <podname> --> To delete the pod
+kubectl describe pod <podname> --> to check the information about the pod
+kubectl get pods -o wide --> to extend the information of the pods
+
+------------------------------------------------------------------------------------------------
