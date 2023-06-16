@@ -12,7 +12,7 @@ spec:
     image: ubuntu
     port:
     - containerport: 8080
-  nodeselector:
+  nodeselector:                # to get scheduled on that particular node with that matching the label
     key: value
 
 
@@ -24,3 +24,286 @@ kubectl describe pod <podname> --> to check the information about the pod
 kubectl get pods -o wide --> to extend the information of the pods
 
 ------------------------------------------------------------------------------------------------
+
+Replication controller
+
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: rc
+  labels:
+    env: production
+spec:
+  replicas: 2
+  selector:
+    matchlabels:
+      env: prod
+  template:
+    metadata:
+      name: mytempp
+      labels:
+        env: prod
+    spec:
+      containers:
+      - name: c1
+        image: ubuntu
+        ports:
+        - containerPoer: 80
+
+============================================================================================================================
+
+Replica set
+
+apiVersion: apps/v1
+kind: Replicaset
+metadata:
+  name: rc
+  labels:
+    env: production
+spec:
+  replicas: 2
+  selector:
+    matchlabels:
+      env: prod
+  template:
+    metadata:
+      name: mytempp
+      labels:
+        env: prod
+    spec:
+      containers:
+      - name: c1
+        image: ubuntu
+        ports:
+        - containerPort: 80
+
+============================================================================================================================
+
+Deployment
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rc
+  labels:
+    env: production
+spec:
+  replicas: 2
+  selector:
+    matchlabels:
+      env: prod
+  template:
+    metadata:
+      name: mytempp
+      labels:
+        env: prod
+    spec:
+      containers:
+      - name: c1
+        image: ubuntu
+        ports:
+        - containerPort: 80
+
+=================================================================================================================================
+statefull set
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: my-statefulset
+spec:
+  selector:
+    matchLabels:
+      app: my-app
+  serviceName: my-app
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+      - name: my-container
+        image: my-image:latest
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: data
+          mountPath: /data
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
+
+==================================================================================================================================
+Dameon set
+
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: my-daemonset
+  labels:
+    app: my-app
+spec:
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+      - name: my-container
+        image: my-image:latest
+        ports:
+        - containerPort: 8080
+
+====================================================================================================================================
+probes
+
+apiVersion apps/v1
+kind: pod
+metadata:
+  name: pod
+spec:
+  containers:
+  - name: c1
+    image: ubuntu
+    ports:
+    - containerPort: 80
+  livenessProbe:
+    httpget:
+      path: /
+      port: 80
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    timeoutSeconds: 10
+    failureThreshold: 10
+    successThreshold: 10
+ redinessProbe:
+   httpget:
+     path: /
+      port: 80
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    timeoutSeconds: 10
+    failureThreshold: 10
+    successThreshold: 10
+
+===================================================================================================================================
+
+CONFIG MAP 
+Environment variables
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-configmap
+data:
+  database.url: jdbc:mysql://localhost:3306/mydb
+  database.username: myuser
+  database.password: mypassword
+
+
+spec:
+  containers:
+    - name: my-container
+      image: my-image:latest
+      env:
+        - name: DB_URL
+          valueFrom:
+            configMapKeyRef:
+              name: my-configmap
+              key: database.url
+        - name: DB_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: my-configmap
+              key: database.username
+        - name: DB_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: my-configmap
+              key: database.password
+
+
+config map by mounting the volumes
+
+spec:
+  containers:
+    - name: my-container
+      image: my-image:latest
+      volumeMounts:
+        - name: config-volume
+          mountPath: /etc/config
+  volumes:
+    - name: config-volume
+      configMap:
+        name: my-configmap
+
+==============================================================================================================================
+
+Secretes
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-secret
+type: Opaque
+data:
+  username: YWRtaW4=  # Base64 encoded value
+  password: cGFzc3dvcmQ=  # Base64 encoded value
+
+
+spec:
+  containers:
+    - name: my-container
+      image: my-image:latest
+      env:
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: my-secret
+              key: username
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: my-secret
+              key: password
+
+
+spec:
+  containers:
+    - name: my-container
+      image: my-image:latest
+      volumeMounts:
+        - name: secret-volume
+          mountPath: /etc/secret
+  volumes:
+    - name: secret-volume
+      secret:
+        secretName: my-secret
+
+
+=================================================================================================================================
+
+init container
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+    - name: main-container
+      image: my-app:latest
+      # Main application container configuration goes here
+  initContainers:
+    - name: init-container
+      image: busybox:latest
+      command: ["sh", "-c", "echo Initialization complete"]
