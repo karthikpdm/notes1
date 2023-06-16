@@ -1,4 +1,29 @@
-discription obout the maven how it works 
+Maven 
+maven is a project management tool which encompasses a project object model, aset of standards , a project life cycle ,a dependency management system , and logic for executing plugin goals at defined phases in lifecycle"
+where it tries to treat the project as the model and it uses the hooks concept where according to the hooks we are divideing the project in to object and take care of the project
+maven manages project build, reporting, and documentation from a central piece of information
+maven is also a dependency management system so during the compilation of the java files there may be the dependency of the java file with the another java file
+so the maven will manage that type of  dependency so which file need to conside the first to create the classs files and genereate the deliverables
+
+main feature of maven
+-> build tool
+-> dependency management tool
+-> documentation tool
+
+pom.xml
+it is a build configuration file all the configuration related to project build is defined over hear like like how to build when to build and what to build in a systematic way and contains the information like dependencies,liberaries ,plugins, config file etc and during the build it will for the pom gile in the source code
+
+build management
+
+-> it is the process of compiling and assembling a software system.
+-> build automation is the act of scripting or automating a wide 
+varity of tasks
+
+a) compiling the scorce code
+b) packaging binaries
+c) running automated tests
+d) deploying to producdtion system
+e) creating the documentation
 
 so thedevelopes will write the codeand the that is the sorce code or the raw codeso from the maven build tool they will buid the 
 application and the code wiil be in the format or the extension of the java
