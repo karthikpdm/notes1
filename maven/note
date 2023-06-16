@@ -1,1 +1,22 @@
+discription obout the maven how it works 
 
+so thedevelopes will write the codeand the that is the sorce code or the raw codeso from the maven build tool they will buid the 
+application and the code wiil be in the format or the extension of the java
+
+during the compalication of the code the maven will conver tyhe java code/file to the object file/class file
+compilation -->rawcode ---> object/class file
+
+so from the group of files that is the class/object files based on the functionality  we generate the one deliverable that is the
+artifacts in the form of jar war ear files
+
+a)where the jar files are the java archive it consists of the class files for the single functionality
+
+b) jar files arem the wab archive it consists of the class files and the 1 or many jar files based on the funcitionality.
+(note so if any web application we creating as the product/application we creating the war extension.
+
+c) so if we want to provide the licence for the web application we create the extension as the ear or entriprise and it may consist 
+of the class files or configuration files additional it consist of an licence. 
+
+java    ->  1.class
+ java    ->  2.class   ---> deliverable(jar,war,ear) 
+ java    ->  3.class
