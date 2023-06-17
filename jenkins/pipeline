@@ -1,0 +1,54 @@
+pipeline{
+    agent any
+       stages{
+         stage(checkout){
+           steps{
+             git credentialsID
+             git branch: 'master'
+               url: 'https://github.com/your/repository.git
+              }
+            }
+         stage(sonarqube){
+          steps{
+            withSonarQubeEnv['cred']
+            sh "mvn clean verify sonar:sonar"
+            }
+        }
+          stage('build'){
+          steps{
+            sh "mvn clean install"
+            sh "cp -R webapps/target/webapss.war .
+            sh "mv webapps.war webapps.$(BUILDNUMBER).war
+               }
+            }
+          stage('create the image upload to the jfrog')
+           steps{
+           sh "docker build -t <imagename> Dockerfile
+           sh "docker tag 
+           with credentials username password
+           docker login -u $(user) -p $(pass) repourl
+           docker push imagename
+           }
+           }
+           stage('deploy to k8s'){
+            steps{
+             kubectl apply -f <filenmae>
+             }
+             }
+            }
+
+
+            =======================================================================================================================
+
+    stage(deploy to tomcat'){
+     steps{
+      shhagent[cred]
+      sh " scp -o StrictHostKeychecking=no webapps/target/webapps.war  user@ipadddress: opt/tomcat/webapps
+      }
+      }
+
+      stage('deploy to container'){
+       steps{
+        sshagent['credentials']
+        sh "ssh stricthostkeychecking=no user@ipaddress 
+           
