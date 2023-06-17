@@ -11,7 +11,7 @@ spec:
   - name: cont1
     image: ubuntu
     port:
-    - containerport: 8080
+    - containerPort: 8080
   nodeselector:                # to get scheduled on that particular node with that matching the label
     key: value
 
@@ -36,7 +36,7 @@ metadata:
 spec:
   replicas: 2
   selector:
-    matchlabels:
+    matchLabels:
       env: prod
   template:
     metadata:
@@ -48,7 +48,7 @@ spec:
       - name: c1
         image: ubuntu
         ports:
-        - containerPoer: 80
+        - containerPort: 80
 
 ============================================================================================================================
 
