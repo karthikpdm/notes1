@@ -65,3 +65,19 @@ echo "the given $file is a directory"
 else
 echo "is not the file or directory"
 fi
+
+====================================================================================================================================
+
+
+!/bin/bash
+
+filename=$(basename "$0")
+
+if [[ $filename == *"magic.sh" ]]; then
+    echo "This is from magic.sh"
+elif [[ $filename == *"magic-test.sh" ]]; then
+    echo "This is from magic-test.sh"
+else
+    echo "Unknown script name"
+fi
++* 4.U
