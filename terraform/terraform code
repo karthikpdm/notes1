@@ -1,1 +1,165 @@
+aws provider
+
+terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+      version = "5.7.0"
+    }
+  }
+}
+
+provider "aws" {
+  region     = "ap-south-1"
+  access_key = "AKIAXOMC4XM2PUSHW7ER"
+  secret_key = "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"
+}
+
+
+
+
+===================================================================================================================
+resource key pair
+
+Resource: aws_key_pair
+
+1) Provides an EC2 key pair resource. A key pair is used to control login access to EC2 instances.
+
+2) Currently this resource requires an existing user-supplied key pair. This key pair's public key will be 
+registered with AWS to allow logging-in to EC2 instances.
+
+3) When importing an existing key pair the public key material may be in any format supported by AWS. 
+Supported formats (per the AWS documentation) are:
+
+        OpenSSH public key format (the format in ~/.ssh/authorized_keys)
+        Base64 encoded DER format
+        SSH public key file format as specified in RFC4716
+
+
+resource "aws_key_pair" "third" {
+  key_name   = "forth"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC6ClP9qtz3HJ/uN1LmM"
+}
+
+output "keypairname" {
+       value = "${aws_key_pair.third.key_name}
+}
+
+
+===================================================================================================================
+to assign the keypair to the newely created instance
+
+resource "aws_instance" "web" {
+  ami                    = "ami-0b0ea68c435eb488d"
+  instance_type          = "t2.micro"
+  key_name               = aws_key_pair.key-tf.key_name
+  tags = {
+    Name = "first-tf-instance"
+  }
+}
+
+===================================================================================================================
+aws security group
+
+resource "aws_security_group" "allow_tls" {
+  name        = "allow_tls"
+  description = "Allow TLS inbound traffic"
+  vpc_id      = aws_vpc.main.id    
+(note:if we dint mention the vpc id it will allocate to the default vpc)
+
+  ingress {
+    description      = "TLS from VPC"
+    from_port        = 443
+    to_port          = 443
+    protocol         = "tcp"
+    cidr_blocks      = [aws_vpc.main.cidr_block]
+    ipv6_cidr_blocks = [aws_vpc.main.ipv6_cidr_block]
+  }
+ ingress {
+    description      = "TLS from VPC"
+    from_port        =  22
+    to_port          =  22
+    protocol         = "tcp"
+    cidr_blocks      = [aws_vpc.main.cidr_block]
+ ingress {
+    description      = "TLS from VPC"
+    from_port        =  80
+    to_port          =  80
+    protocol         = "tcp"
+    cidr_blocks      = [aws_vpc.main.cidr_block]
+ ingress {
+    description      = "TLS from VPC"
+    from_port        =  22
+    to_port          =  22
+    protocol         = "tcp"
+    cidr_blocks      = [aws_vpc.main.cidr_block]
+
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = {
+    Name = "allow_tls"
+  }
+}
+
+output "awssecuritygroup" {
+      value = "${aws_security_group.allow_tls.id}"
+]
+
+
+===================================================================================================================
+Using Terraform dynamic blocks
+
+Terraform dynamic blocks are a special Terraform block type that provides the functionality of a for 
+expression by creating multiple nested blocks. 
+
+resource "aws_security_group" "allow_tls" {
+  name        = "allow_tls"
+  description = "Allow TLS inbound traffic"
+  dynamic "ingress" {
+    for_each = [80,8080,443,9090,9000]
+    iterator = port
+    content {
+      description = "TLS from VPC"
+      from_port   = port.value
+      to_port     = port.value
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  }
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+}
+
+
+===================================================================================================================
+
+
+
+===================================================================================================================
+
+
+
+===================================================================================================================
+
+
+
+===================================================================================================================
+===================================================================================================================
+===================================================================================================================
+===================================================================================================================
+===================================================================================================================
+
+=================================================================================================================
 
