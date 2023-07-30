@@ -1,3 +1,28 @@
+
+docker images-f dangling=true --> To display the dangling images(only)
+To display only the stopped/exited containers - docker ps -a -f status=exited
+
+ Display the conatiner idsthat are stopped - docker ps -aq -f status=exited
+
+Remove all the stopped containers without prune command - docker ps -a status=exited | xargs docker rm
+
+Remove all the images - docker images -q | xargs docker rmi
+
+Remove images forcefully - docker images -q | xargs docker rmi --forcd
+
+How do you delete all running container - Docker stop $( sudo docker ps -q )
+
+Docker rm $( sudo docker ps -a -q) 
+
+Docker ps port containerid
+
+Stop all running containers: # docker stop $(docker ps -a -q)
+
+Delete all stopped containers: # docker rm $(docker ps -a -q)
+
+Delete all images: docker rmi -f $(docker images -q
+
+=======================================================================================================================================
 Run command options
 1) Docker login – to login to the hub.docker.com from u r docker or so incase of private repository 
 like azure,aws and gcp. 
