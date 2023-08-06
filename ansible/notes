@@ -1,1 +1,220 @@
+ansible modules
+
+Ansible modules are small pieces of code that serve as building blocks for Ansible automation. They are responsible for carrying out 
+specific tasks on target hosts, such as managing files, installing software, configuring services, and more.
+
+There are two main types of Ansible modules:
+
+Core Modules: These modules come built-in with Ansible and are distributed along with it. They cover a wide range of tasks and 
+provide essential functionality for managing different aspects of remote systems.
+
+Custom Modules: Users can also create their own custom modules if the built-in ones don't meet their requirements. Custom modules 
+allow you to extend Ansible's capabilities and tailor it to your specific needs.
+
+============================================================================================================================================
+Verify your inventory. If you created your inventory in a directory other than your home directory, specify the full path with the -i option.
+
+ansible-inventory -i inventory.yaml --list
+
+note - to run a playbook if the inventary is in another location -  ansible-playbook -i inventory.yaml playbook.yaml
+
+to list the target machines
+ to list all the host machines in that inventaryfile  -  ansible all -i inventary.yml --list-host
+ to list all the host machine of that particular group in inventaryfile  - ansible <groupname> -i inventary.yml --list-host
+to list all the patterns starting with the particular name - ansible 'pattern*" -i inventary.yml --list-host
+to list the range of the host machines - ansible 'db[a:c]' -i inventary.yml --list-host
+=========================================================================================================================================
+to ping the managed node group
+[node-group]
+node1 ansible_host=ip1
+node2 ansible_host=ip2
+ansible <groupname> -m ping
+
+
+=========================================================================================================================================
+ad-ock commands - used to check some ansible commands quickely
+=========================================================================================================================================
+Plugins
+Pieces of code that expand Ansible’s core capabilities, they can control how you connect to a managed node (connection plugins), manipulate data (filter plugins) and even control what is displayed in the console (callback plugins). See Working with plugins for details.
+=========================================================================================================================================
+to pass the variable during the run time like if dont want to do the hardcore value for the host names we can define the key in the 
+playbook and value will be sent as a extravars
+
+ansible-playbook .yml -e or --extra-vars 'key=value'
+=========================================================================================================================================
+if i want to run the playbook in the targets with the different users we need to add the uers in the inventary file with the default var
+ables
+
+[group]
+node ansible_user=kar
+node1 ansible_user=thik
+=========================================================================================================================================
+register and debug
+
+register
+In Ansible, the register keyword is used to capture the output of a task and store it in a variable. It allows you to save the
+results of a particular task and then use that information in subsequent tasks or in conditionals within the same playbook.
+
+The register keyword is commonly used with tasks that produce output, such as running a command on a remote host or querying 
+system information. For example, you might want to run a command and save its output to a variable for further processing.
+
+debug
+The debug module is an essential module in Ansible that is used for debugging and displaying information during playbook execution.
+It allows you to print the value of variables, registered variables, and other data to the standard output, providing insights 
+into what's happening at different stages of your automation.
+
+The debug module can be particularly helpful when you want to inspect the content of variables or troubleshoot issues in your 
+playbook. It provides a convenient way to view the values of variables and make sure your playbook is functioning as expected.
+
+---
+- name: Install Web Package
+  hosts: nodes
+  become: true
+  tasks:
+    - name: Install nginx
+      yum:
+        name: nginx
+        state: latest
+      register: yum_output
+      ignore_errors: yes
+
+    - name: Print the output
+      debug:
+        msg: "{{ yum_output }}"
+
+    - name: Print if Failed
+      debug:
+        msg: "Package Failed To Install"
+      when: yum_output.failed == true
+=========================================================================================================================================
+ansible facts
+
+note: required to execute the playbook based on the system information like install the packages based on the available memory or disk
+space with the particular operating system
+
+by default the ansibe will collect the ansible facts to desiable the collecting the facts we  can diable the facts in the playbook
+---
+- name: Ansible Fact Demo
+  hosts: nodes
+  gather_facts: false
+  tasks:
+
+--------                 --------------------            ---------------------           ---------------------------------
+
+In Ansible, "facts" refer to the system information collected from managed hosts during playbook execution. 
+These facts provide valuable insights into the target hosts' configuration and state, such as hardware details, operating system 
+information, network interfaces, installed packages, ip address,hostname, memory, disk space .file system and more. 
+
+Ansible gathers these facts automatically before running any tasks, and you can access 
+and use them within your playbooks.
+
+Facts are gathered by the setup module, which runs by default at the beginning of each playbook. The setup module collects 
+information about the target hosts and stores it as Ansible facts. The facts are then made available as variables that you can 
+use in your playbooks.
+
+To view the gathered facts for a specific host or all hosts in your inventory, you can use the ansible_facts variable. This 
+variable contains a dictionary of all the facts for the particular host being targeted by a task.
+
+to view the facts collected using the debug module like
+
+---
+- name: Example playbook to display facts
+  hosts: your_target_hosts
+  tasks:
+    - name: Display gathered facts
+      debug:
+        var: ansible_facts
+
+so ansible fact will collect all the complete information so in oder to view the particular information we include the environment
+variables in the debug module
+
+                      or 
+
+we can include the debug module in the playbook to print the paticular information
+
+ansible_all_ipv4_addresses", ansible_distribution , ansible_hostname, ansible_facts['ansible_distribution']
+
+to check using the adock commands ansible all -m setup
+
+In this example, the setup module is automatically run before any other tasks, and the gathered facts are made available in 
+the ansible_facts variable. The debug module is then used to display the contents of ansible_facts, which will include information 
+like the host's hostname, IP address, operating system, memory, disk space, etc.
+
+You can access specific facts from the ansible_facts variable using dot notation. For instance, if you want to display the target 
+host's operating system, you can use ansible_facts['ansible_distribution'].
+
+yaml
+Copy code
+---
+- name: Example playbook to display specific fact
+  hosts: your_target_hosts
+  tasks:
+    - name: Display operating system
+      debug:
+        msg: "The operating system is {{ ansible_facts['ansible_distribution'] }}"
+
+==================================================================================================================
+ansible custom facts
+
+Custom facts in Ansible refer to user-defined or custom system information that you can gather from managed hosts during playbook 
+execution. While Ansible automatically collects system facts using the setup module, you can extend this functionality by creating 
+your own custom facts to provide additional information tailored to your specific needs.
+
+Custom facts are gathered by Ansible scripts or executable files that you create and place in a specific directory on the target 
+hosts. When the setup module runs, it will also check for custom facts in this directory and collect them alongside the built-in 
+facts.
+
+Here's how you can create and use custom facts in Ansible:
+
+Create a directory for custom facts on the target hosts:
+By default, custom facts should be placed in /etc/ansible/facts.d/ directory on the target hosts. If this directory doesn't exist,
+you can create it.
+
+Write the custom fact script:
+Create a script or executable file in the custom facts directory you just created. The script should output facts in a key-value 
+format (JSON or INI). The script can be written in any programming language, as long as it returns the correct facts in the proper 
+format.
+
+For example, let's say you want to create a custom fact to display the version of a specific application installed on the target 
+host. You can create a Bash script called my_custom_fact.sh:
+
+bash
+Copy code
+#!/bin/bash
+
+# Get the version of the application
+app_version=$(command_to_get_app_version)
+
+# Output the fact in JSON format
+echo '{"app_version": "'"$app_version"'"}'
+Set execute permissions:
+Ensure that the custom fact script has the execute permission (chmod +x my_custom_fact.sh) so that Ansible can run it on the target
+hosts.
+
+Run the playbook with custom facts:
+When you run your Ansible playbook, the setup module will automatically discover and collect the custom facts in addition to the 
+built-in facts. You can then access the custom facts using the ansible_facts variable in your playbook, just like the built-in facts.
+
+Here's an example of how you can use the custom fact in your playbook:
+
+yaml
+Copy code
+---
+- name: Example playbook with custom facts
+  hosts: your_target_hosts
+  tasks:
+    - name: Display the custom fact
+      debug:
+        msg: "The version of the application is {{ ansible_facts.app_version }}"
+
+In this example, the custom fact script my_custom_fact.sh gathers the version of the application and outputs it in JSON format. 
+The playbook uses the debug module to display the value of the custom fact app_version.
+
+Custom facts provide a powerful way to extend Ansible's capabilities and gather specific information from your managed hosts, 
+enabling you to create more dynamic and customized automation workflows.
+
+=====================================================================================================================================
+
+
+
 
