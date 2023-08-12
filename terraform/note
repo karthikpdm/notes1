@@ -1,1 +1,12 @@
 
+Versioning
+
+The required_version setting can be used to constrain which version of the Terraform CLI can be used with your configuration. 
+If the running version of Terraform doesn't match the constraints specified, Terraform will produce an error and exit without taking 
+any further actions.
+
+terraform {
+ required_version = ">= 0.12"
+}
+
+=======================================================================================================================================================
