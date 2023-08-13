@@ -123,6 +123,13 @@ Using Terraform dynamic blocks
 Terraform dynamic blocks are a special Terraform block type that provides the functionality of a for 
 expression by creating multiple nested blocks. 
 
+The need to create identical (or similar) infrastructure resources is common. A standard use case is multiple virtual server 
+instances on a cloud platform like AWS or Azure Terraform provides routines such as for_each and count to simplify deploying these 
+resources, removing the requirement for large blocks of duplicate code. 
+
+Additionally, teams may need to configure multiple duplicate elements within a resource. In conjunction with a for_each routine, 
+dynamic blocks are used within an infrastructure resource to remove the need for multiple duplicate “blocks” of Terraform code. 
+
 resource "aws_security_group" "allow_tls" {
   name        = "allow_tls"
   description = "Allow TLS inbound traffic"
