@@ -42,10 +42,11 @@ resource "aws_key_pair" "third" {
   public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC6ClP9qtz3HJ/uN1LmM"
    or
   public_key = file("${path.module}/id_rsa_pub)"  (store the file in the pwda nd define the file)
+                 file("~/.ssh/id_rsa.pub")
 }
 
 output "keypairname" {
-       value = "${aws_key_pair.third.key_name}
+       value = "${aws_key_pair.third.key_name}"
 }
 
 
