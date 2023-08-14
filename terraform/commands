@@ -30,6 +30,10 @@ All other commands:
   untaint       Remove the 'tainted' state from a resource instance
   version       Show the current Terraform version
   workspace     Workspace management
+ terraform workspace list -  it will list all the available ws
+ terraform workspace new dev - it will create the new ws
+ terraform workspace show - it will show the current workspace
+ terrafprm select dev - it will switch to the another ws
 
 Global options (use these before the subcommand, if any):
   -chdir=DIR    Switch to a different working directory before executing the
