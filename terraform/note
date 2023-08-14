@@ -78,7 +78,11 @@ any potential errors that could prevent successful execution of your Terraform p
 
 1) post-save check in a text before executing the terraform plan command
 =======================================================================================================================================================
+terraform taint <resource name> <aws_security_group.mysecuritygroup>
 
+the terraform taint command is used to mark a resource as "tainted," which means that Terraform will consider the resource as 
+needing to be recreated during the next terraform apply operation. This can be useful when you want to trigger the recreation 
+of a specific resource due to changes in its configuration or dependencie
 =======================================================================================================================================================
 
 =======================================================================================================================================================
