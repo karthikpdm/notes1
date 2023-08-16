@@ -12,7 +12,8 @@ Custom Modules: Users can also create their own custom modules if the built-in o
 allow you to extend Ansible's capabilities and tailor it to your specific needs.
 
 ============================================================================================================================================
-Verify your inventory. If you created your inventory in a directory other than your home directory, specify the full path with the -i option.
+Verify your inventory. If you created your inventory in a directory other than your home directory, specify the full path with the
+-i option.
 
 ansible-inventory -i inventory.yaml --list
 
