@@ -1,1 +1,43 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout your source code from version control
+                // ...
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                // Build your code
+                // ...
+            }
+        }
+        
+        stage('SonarQube Analysis') {
+            steps {
+                script {
+                    def scannerHome = tool name: 'SonarQubeScanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+                    withSonarQubeEnv('SonarQube') {
+                        sh "${scannerHome}/bin/sonar-scanner"
+                    }
+                }
+            }
+        }
+    }
+    
+    post {
+        failure {
+            script {
+                def qualityGate = waitForQualityGate()
+                if (qualityGate.status != 'OK') {
+                    currentBuild.result = 'ABORTED'
+                    error("Quality gate failed: ${qualityGate.status}")
+                }
+            }
+        }
+    }
+}
 
