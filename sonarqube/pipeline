@@ -41,3 +41,53 @@ pipeline {
     }
 }
 
+
+
+======================================================================================================================================
+
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout the source code from version control
+                checkout scm
+            }
+        }
+        
+        stage('Build and SonarQube Analysis') {
+            steps {
+                // Build the project using Maven
+                sh 'mvn clean package'
+                
+                // Run SonarQube analysis
+                sh 'mvn sonar:sonar'
+            }
+        }
+        
+        stage('Send Quality Gate Report Email') {
+            steps {
+                script {
+                    def qualityGateStatus = sh(script: "mvn sonar:status -Dsonar.login=your-sonar-token -Dsonar.host.url=http://sonarqube-server:9000", returnStatus: true).trim()
+                    
+                    if (qualityGateStatus == 'ERROR') {
+                        emailext (
+                            subject: "Quality Gate Report - Failed",
+                            body: "The SonarQube quality gate check failed. Please check the quality gate report for details.",
+                            to: "developer@example.com"
+                        )
+                    } else {
+                        emailext (
+                            subject: "Quality Gate Report - Passed",
+                            body: "The SonarQube quality gate check passed. The code is ready for further testing.",
+                            to: "developer@example.com"
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
